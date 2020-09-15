@@ -1,0 +1,145 @@
+ 
+Week 1: Q1
+数字反转
+Let X be a variable that stores a positive integer in which its last digit
+is not zero. Write a segment of JS code to reverse its digits.
+e.g. if X = 13579; X should become 97531.
+
+
+function reverseNumber(x) {
+  let ans = 0
+     while (x != 0) {
+            ans = ans * 10 + (x % 10);
+            x /= 10;
+           //console.log(x);
+           x = x - x % 1;//eliminate number after decimal point
+           //console.log(x);
+            };
+       if (ans < Number.MIN_VALUE || ans > Number.MAX_VALUE) {
+            ans = 0;
+        }
+        return ans;
+}
+var X = 13579;
+console.log(Number(reverseNumber(X)));
+
+
+
+Week 1: Q2
+深拷贝加排序
+Write a segment of JS code to make a DEEP copy of array "fruits" and sort the elements in
+the cloned array by "id" in ascending order.
+const fruits = [
+  {id:43, title:'Apple', price:12}, {id:21, title:'Banana', price:5},
+  {id:13, title:'Orange', price:8}, {id:55, title:'Mango', price:15},
+  {id:44, title:'Grape', price:10}, {id:6, title:'Peach', price: 14}
+]
+
+
+const fruits = [
+  {id:43, title:'Apple', price:12}, {id:21, title:'Banana', price:5},
+  {id:13, title:'Orange', price:8}, {id:55, title:'Mango', price:15},
+  {id:44, title:'Grape', price:10}, {id:6, title:'Peach', price: 14}
+]
+//console.log(fruits);
+
+function deepCopy(obj){
+  var result = Array.isArray(obj)?[]:{};
+  for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+      if(typeof obj[key]==="object"){
+        result[key] = deepCopy(obj[key]); //递归复制
+      }else{
+        result[key] = obj[key];
+      }
+    }
+  }
+return result;
+}
+
+console.log(deepCopy(fruits));
+const newfruits =deepCopy(fruits);
+newfruits.sort(function(a,b){return a.id - b.id});
+console.log(newfruits);
+
+/*
+Shallow copy copies only the first layer of an object, Deep objects(对象内还有对象) copy their references
+Deep copy copies every layer of data
+We need to figure out what we need is to copy only the first level of object or array elements, or
+recursively copy all levels of objects and array elements
+*/
+
+关于深拷贝：
+
+
+
+Week 1: Q3
+计算数值长度（js中数的有效性）
+Implement a function named "length" that takes one parameter and perform the
+followings:
+- If the parameter is an array, return its length (# of elements)
+- If the parameter is a string, return its length (# of characters)
+- If the parameter is a number that is neither NaN nor Infinity, return the
+number of digits in its integer portion. (e.g., for -456.99, the integer
+portion is -456, so return 3)
+- Otherwise, return 0
+Note: For simplicity, your solution does not need to deal with floating point numbers, when converted to string, appear in scientific notation such as 3E-50 or 3E50.
+
+
+function length(x) {
+ if(Array.isArray(x) || typeof(x)=="string")
+  return x.length;
+ 
+ if(typeof(x)=="number" && !isNaN(x) && isFinite(x) && Number.MIN_SAFE_INTEGER <= x && x <= Number.MAX_SAFE_INTEGER ){
+    //var tmp = x.toString();
+      // console.log(tmp);
+    //console.log(x);
+    return Math.abs(parseInt(x)).toString().length;
+  }
+if(typeof(x)=="number" && !isNaN(x) && isFinite(x) )
+{
+ if(x < Number.MIN_SAFE_INTEGER || x > Number.MAX_SAFE_INTEGER)
+ {
+  
+  var tmp = x.toString();
+    console.log(tmp);
+    //console.log(tmp.indexOf('e'));
+    //console.log(tmp.indexOf('+'));
+    if(tmp.indexOf('e') == 1 && tmp.substr(0, 1) == '1')
+    {
+     var a = parseInt(tmp.slice((tmp.indexOf('+')+1)));
+        return a;
+ }
+    var b = parseInt(tmp.slice((tmp.indexOf('+')+1))) + 1;
+    return b;
+ }
+}
+ 
+ return 0;
+}
+
+console.log(length(9999999999999999999999999));
+console.log(length(9999999999999999999999999.897979797));
+console.log(length(-9999999.9));
+console.log(length(9999.9))
+console.log(length(45213213121111111119900000000));
+console.log(length(-45213213121111111119900000000.999))
+console.log(length(NaN));
+console.log(length(Infinity));
+console.log(length(true));
+//console.log(Number.MIN_SAFE_INTEGER);
+//console.log(Number.MAX_SAFE_INTEGER);
+
+
+
+hello. actually in JS we will be limited by Number.MIN_SAFE_INTEGER and Number.MAX_SAFE_INTEGER. I don't find some answer about how to return big numbers' length.
+for example how to show the length of "9999999999999999999999999" and even "45213213121111111119900000000"
+and "9999999999999999999999999.897979797" and "-45213213121111111119900000000.999"
+I try to use some methods to solve it ,although it is a very stupid way 😂.
+
+
+Also, why do you perform this specific checking?
+if(tmp.indexOf('e') == 1 && tmp.substr(0, 1) == '1')
+因为99999999999999999这类的数才会进位，进位则计算长度的时候就会增加一位，长度就会变长一位。
+但是如果本来就是1000203233030232000009829929， 这样科学计数法得出1.000203233030232e+27，这种就是正常情况不会增加一位。
+只有“1 “和 ”e “ 是紧挨在一起的才会是进位的情况

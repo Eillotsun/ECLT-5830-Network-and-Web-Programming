@@ -10,6 +10,6 @@
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    std::cout << "Hello, welcome to ECLT 5830 Network and Web Programming!\n";
     return 0;
 }
