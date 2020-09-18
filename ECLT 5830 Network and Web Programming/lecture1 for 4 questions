@@ -71,6 +71,16 @@ recursively copy all levels of objects and array elements
 
 关于深拷贝：
 
+The recursive approach shown here or the JSON approach used by many students in this question would not work on objects or arrays with circular reference.
+To combat circular reference, one would need customized code to keep track of all the references in the source object so that same references in the source object would map to same references in the target object.
+
+关于什么是循环引用？这里我一开始出现了理解的错误
+这是同班一位同学总结的
+ Imagine object as human,
+we can use our fingers to point to other people
+if A's finger point to B, and B's finger point to A, that is circular reference
+but if I use my finger pointing to myself, that is also circular reference.
+
 
 
 Week 1: Q3
@@ -143,3 +153,50 @@ if(tmp.indexOf('e') == 1 && tmp.substr(0, 1) == '1')
 因为99999999999999999这类的数才会进位，进位则计算长度的时候就会增加一位，长度就会变长一位。
 但是如果本来就是1000203233030232000009829929， 这样科学计数法得出1.000203233030232e+27，这种就是正常情况不会增加一位。
 只有“1 “和 ”e “ 是紧挨在一起的才会是进位的情况
+
+以上出现了一个错误的问题，首先是这里我只考虑了进位的情况如上述，如果是21个9的数字会变成1e+21就变成了长度为22的数字，但是如果本来就是为了测量1e+21的长度的话，程序会输出其长度为21，这样就出现了错误。
+
+老师在指出我的问题是将21个9 称作 string，我就产生了疑问，这不是数字吗，为什么是string。
+
+数字在 Js interpreter 中是被看作一串字符串然后将这个字符串转化为最相近的数字
+老师的回答：
+When we type a number literal in the JS source code, the JS interpreter read the literal as a string character by character, and then convert the string to the nearest number that can be represented in IEEE754 format (in binary).
+for example
+let a = 1.00000000000000000000000000000000001;
+console.log(a == 1); // true
+When the JS interpreter reads the code, it reads 1.00000000000000000000000000000000001 as a string and then converts the string to the nearest represetable number in IEEE754 format, which is 1 in this case. That's why the exact value of variable a is 1
+Similarly, because 999999999999999999999 cannot be represented exactly in IEEE754 format, it is rounded to the nearest representable value, which is 1e+21.
+
+let b = 999999999999999999999;      // We can type this number in the source code, but the actual value assigned to the variable is 1e+21.
+console.log(b);          // 1e+21
+console.log(b == 1e+21); // true
+To the JS interpreter, everything we type in the source code, including number literals, are just strings.
+That's why I called 999999999999999999999 a string (and not an actual number); the actual value represented by such a string is rounded to 1e+21.
+
+
+
+Week 1: Q4
+Implement a function that takes one parameter and returns true if the parameter
+is an object containing the following three properties:
+'foo', 'bar', and 'foo-bar'. Otherwise, the function returns false.
+Please note that the value of the properties can be undefined.
+
+
+function checkKey(obj){
+    if(obj==undefined){
+        return false;
+    }
+    return (("foo" in obj) &&("bar" in obj)&&("foo-bar" in obj));
+    //return obj.hasOwnProperty('foo') && obj.hasOwnProperty('bar') && obj.hasOwnProperty('foo-bar');
+}
+
+let A = { foo: 1, bar: 2 };
+console.log(A);
+A.__proto__['foo-bar'] = 12345;
+console.log(A);
+console.log(A['foo-bar']);// 12345 (A has access to inherited property)
+console.log(checkKey(A));
+
+这里主要是要弄懂 自身属性和继承属性  __proto__  prototype  constructor 三种区别与联系
+
+
