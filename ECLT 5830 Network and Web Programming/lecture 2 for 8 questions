@@ -1,0 +1,178 @@
+
+Week 2:
+Q1: Use HTML to display a segment of C source code as shown in an image.
+
+<pre>
+  <code>
+#include &lt;stdio.h&gt;
+ 
+int main()
+{
+  int c, n, f = 1;
+ 
+  printf("Enter a number to calculate its factorial\n");
+  scanf(&quot;%d&quot;, &amp;n);
+  for (c = 1; c &lt;= n; c++)
+    f = f * c;
+ 
+  printf(&quot; Factorial of %d = %d\n &quot;, n, f);
+ 
+  return 0;
+}
+  </code>
+</pre>
+
+
+通过 <pre><code>  </code></pre>
+这里就是注意要要encode <（&lt;） >（&gt;） &（&amp;） "（&quot;） 这几个字符
+
+
+Week 2: Q2
+Q2: Use HTML to construct a table as shown in an image.
+
+<table>
+<tr>
+<td colspan="3">A</td>
+</tr>
+<tr>
+<td>B1</td>
+<td>B2</td>
+<td>B3</td>
+</tr>
+<tr>
+<td>C1</td>
+<td rowspan="2">D</td>
+<td>E1</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>E2</td>
+</tr>
+</table>
+
+通过<table> <tr> <td> 以及colspan and rowspan 实现
+
+Q3: Use only HTML to display different image based on client screen width.
+    modify the HTML code so that only one of the images is displayed
+    depending on the screen width. In particular, if the screen is
+    wider than 800 pixels, display the first image. Otherwise, display the
+    second image.
+
+<picture>
+<source  media="(min-width: 650px)" srcset='https://www.cpr.cuhk.edu.hk/images/common/universitylibrary_sm2.jpg'>
+<img src='https://www.cpr.cuhk.edu.hk/images/common/universityentrance_sm.jpg'>
+</picture>
+
+<p>以下是我自己的笔记 </p>
+<p>调整浏览器大小以查看以不同视口大小加载的不同版本的图片。
+    浏览器查找媒体查询与用户当前视口宽度匹配的第一个源元素，
+    并获取srcset属性中指定的图像。</p>
+
+<p>img元素是图片声明块的最后一个子标记。
+    img元素用于为不支持picture元素的浏览器提供向后兼容性，或者如果没有匹配源标签。
+</p>
+
+
+
+Q4: Create a hyperlink to an image, when clicked, would display the image in an iframe.
+
+<p>
+<a href='https://www.cpr.cuhk.edu.hk/images/common/universitylibrary_sm2.jpg' target='view_window'>CUHK Library</a><br>
+<a href='https://www.cpr.cuhk.edu.hk/images/common/universityentrance_sm.jpg' target='view_window'>CUHK Entrance</a>
+</p>
+
+<!-- about:blank is a URL that representing a 'blank page' -->
+<iframe src="about:blank" name="view_window">
+</iframe>
+<p> a 标签的 target 属性规定在何处打开链接文档。
+如果在一个 <a> 标签内包含一个 target 属性，浏览器将会载入和显示用这个标签的 href 属性命名的、名称与这个目标吻合的框架或者窗口中的文档。如果这个指定名称或 id 的框架或者窗口不存在，浏览器将打开一个新的窗口，给这个窗口一个指定的标记，然后将新的文档载入那个窗口。从此以后，超链接文档就可以指向这个新的窗口。</p>
+<p>当用户第一次选择内容列表中的某个链接时，浏览器将打开一个新的窗口，将它标记为 "view_window"，然后在其中显示希望显示的文档内容。如果用户从这个内容列表中选择另一个链接，且这个 "view_window" 仍处于打开状态，浏览器就会再次将选定的文档载入那个窗口，取代刚才的那些文档。</p>
+
+
+Q5. A server sent a response to redirect the client to http://example.com/abc. How would this HTTP response look like?
+
+HTTP/1.1 301 Moved Permanently
+Location: http://example.com/abc
+
+HTTP/1.1 302 Found
+Location: http://example.com/abc
+
+这里需要理解的就是HTTP的状态码
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status
+
+
+Q6: How can a server determine if a client is a Chrome browser?
+
+This is in Mac
+user-agent:
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+This is in version of iphone X
+User-Agent:
+Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1
+We can see the difference between these two "User-Agent", "Chrome/85.0.4183.121" can be used to distinguish whether this browser is chrome.
+
+主要还是看 User-Agent这个字段，如下是详细的内部关于各种各样浏览器的字段组成规则
+const userAgentRules: UserAgentRule[] = [
+  ['aol', /AOLShield\/([0-9\._]+)/],
+  ['edge', /Edge\/([0-9\._]+)/],
+  ['edge-ios', /EdgiOS\/([0-9\._]+)/],
+  ['yandexbrowser', /YaBrowser\/([0-9\._]+)/],
+  ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/],
+  ['samsung', /SamsungBrowser\/([0-9\.]+)/],
+  ['silk', /\bSilk\/([0-9._-]+)\b/],
+  ['miui', /MiuiBrowser\/([0-9\.]+)$/],
+  ['beaker', /BeakerBrowser\/([0-9\.]+)/],
+  ['edge-chromium', /Edg\/([0-9\.]+)/],
+  [
+    'chromium-webview',
+    /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/,
+  ],
+  ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
+  ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/],
+  ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/],
+  ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/],
+  ['fxios', /FxiOS\/([0-9\.]+)/],
+  ['opera-mini', /Opera Mini.*Version\/([0-9\.]+)/],
+  ['opera', /Opera\/([0-9\.]+)(?:\s|$)/],
+  ['opera', /OPR\/([0-9\.]+)(:?\s|$)/],
+  ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],
+  ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],
+  ['ie', /MSIE\s(7\.0)/],
+  ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/],
+  ['android', /Android\s([0-9\.]+)/],
+  ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/],
+  ['safari', /Version\/([0-9\._]+).*Safari/],
+  ['facebook', /FBAV\/([0-9\.]+)/],
+  ['instagram', /Instagram\s([0-9\.]+)/],
+  ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/],
+  ['ios-webview', /AppleWebKit\/([0-9\.]+).*Gecko\)$/],
+  ['searchbot', SEARCHBOX_UA_REGEX],
+];
+
+重点看的是 safari edge-chromium  chrome
+
+
+Q7. If we were to send a PNG image to a client such that the client would request the user to save the image file (instead of displaying the image), how should we set headers in the response?
+
+Content-Type: image/png //当前内容的MIME类型 （what is MIME?->(Multipurpose Internet Mail Extensions)）
+Content-Disposition: attachment; filename="fname.ext" //对已知MIME类型资源的描述，浏览器可以根据这个响应头决定是对返回资源的动作，如：将其下载或是打开。
+
+Content-Type这个字段比较重要 可以通过http header 了解http包头里面的所以字段
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers
+
+
+Q8: If the following form is submitted, what would the query string in the URL look like?
+
+<form method=GET>
+<input type=hidden name=foo value="%*%">
+<input type=text value="12345">
+<input name="A&B" value="Hello World">
+</form>
+
+
+foo=%25%2A%25&A%26B=Hello%20World
+
+foo=%25*%25&A%26B=Hello+World
+
+据说 * 号不用转义是因为在url里面没有什么功能 % 和 <> 都是可以构成一定语句的？类似防注入？没有证实，纯属瞎说。
+其实 + 号也是要encode的，但是我就不明白为什么空格变成+了呢？

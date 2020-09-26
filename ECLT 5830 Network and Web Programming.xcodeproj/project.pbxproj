@@ -26,6 +26,7 @@
 		A987975225109E00002891D2 /* ECLT 5830 Network and Web Programming */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ECLT 5830 Network and Web Programming"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A987975525109E00002891D2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A987975D25109E4B002891D2 /* lecture1 for 4 questions */ = {isa = PBXFileReference; lastKnownFileType = text; path = "lecture1 for 4 questions"; sourceTree = "<group>"; };
+		A9EC530A251F072500665895 /* lecture 2 for 8 questions */ = {isa = PBXFileReference; lastKnownFileType = text; path = "lecture 2 for 8 questions"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 			children = (
 				A987975525109E00002891D2 /* main.cpp */,
 				A987975D25109E4B002891D2 /* lecture1 for 4 questions */,
+				A9EC530A251F072500665895 /* lecture 2 for 8 questions */,
 			);
 			path = "ECLT 5830 Network and Web Programming";
 			sourceTree = "<group>";
